@@ -1,6 +1,9 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-
 export default (req, res) => {
   res.statusCode = 200
-  res.json({ name: 'John Doe' })
+  res.setHeader('Content-Type', 'application/json')
+  if (req.method == 'GET') {
+    res.end(JSON.stringify({ method: 'GET' }))      
+  } else {
+    res.end(JSON.stringify({ method: 'POST' }))
+  }
 }
