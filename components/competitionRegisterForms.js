@@ -1,3 +1,5 @@
+import Router from 'next/router'
+
 class CompetitionRegisterForms extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +15,7 @@ class CompetitionRegisterForms extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    alert('A name was submitted: ' + this.state.value);
+    Router.push('/registered')
   }
 
   render() {

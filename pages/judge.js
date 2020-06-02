@@ -1,31 +1,37 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Layout from '../components/layout'
 import CompetitionTitle from '../components/competitionTitle'
-import CompetitionTargetNumbers from '../components/competitionTargetsNumbers'
 import CompetitionMovies from '../components/CompetitionMovies'
 
-export default function Judge(props) {
+export default function Judge({id, title}) {
+  const router = useRouter();
+  const query = {
+    id: id,
+    title: title
+  }
+  const href = { pathname: '/competitions', query: query }
+  const handleClick = (e) => {
+    router.push(href)
+  }
+
   return (
     <Layout>
-      <CompetitionTitle title="YOSAKOIソーラン一次審査 審査枠(2)" />
-      <CompetitionTargetNumbers numbers="4"/>
-      <CompetitionMovies />
-      <Link href="/competition">
+      <CompetitionTitle title={title} />
+      <CompetitionMovies competitionID={id} />
+      <Link href={href}>
         <button>戻る</button>
       </Link>
-      <Link href="/competition">
-        <button>登録</button>
-      </Link>
+      <button onClick={handleClick}>登録</button>
     </Layout>
   )
 }
 
-// export async function getServerSideProps() {
-//   // Fetch data from external API
-//   const res = await fetch(`http://localhost:3000/api/hello`)
-//   const data = await res.json()
-
-//   // Pass data to the page via props
-//   return { props: { data } }
-// }
-
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      id: context.query.id,
+      title: context.query.title
+    }
+  }
+}

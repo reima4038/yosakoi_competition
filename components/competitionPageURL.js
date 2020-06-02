@@ -1,10 +1,10 @@
 // 審査ページURLのコンポーネント
 
-export default function CompetitionPageURL() {
+export default function CompetitionPageURL(props) {
+
   return(
     <div>
-      <h2>審査ページURL</h2>
-      <input type="text" value="http://competition/pdjoaijdoaijs" />
+      <input type="text" value={'http://competitions/' + props.competitionID} />
     </div>
   );
 }
