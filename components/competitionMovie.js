@@ -5,13 +5,12 @@ import YouTubeEmbedVideo from './youtubeEmbedVideo'
 
 // 評価対象の演舞
 export default function competitionMovie(props) {
-  const smile = 'smile' + props.videoID;
-  const heat = 'heat' + props.videoID;
-  const oneness = 'oneness' + props.videoID;
-  const groupDancing = 'groupDancing' + props.videoID;
-  const tech = 'tech' + props.videoID;
-  const structure = 'structure' + props.videoID;
-  const [rate, setRate] = useState({[smile]: 2, [heat]: 2})
+  const smile = 'smile_' + props.videoID;
+  const heat = 'heat_' + props.videoID;
+  const oneness = 'oneness_' + props.videoID;
+  const groupDancing = 'groupDancing_' + props.videoID;
+  const tech = 'tech_' + props.videoID;
+  const structure = 'structure_' + props.videoID;
   
   return (
     <div>
@@ -20,18 +19,14 @@ export default function competitionMovie(props) {
       <ul>
         <li key={smile}>笑顔：
           <Rating
-            name={smile} value={rate[smile]}
-            onChange={(event, newValue) => {
-              setRate(Object.assign(rate, {[smile]: newValue}))
-            }}
+            name={smile} value={props.ratingState[smile]}
+            onChange={props.onChange}
           />
         </li>
         <li key={heat}>熱量：
           <Rating
-            name={heat} value={rate[heat]}
-            onChange={(event, newValue) => {
-              setRate(Object.assign(rate, {[heat]: newValue}))
-            }}
+            name={heat} value={props.ratingState[heat]}
+            onChange={props.onChange}
           />
         </li>
         <li key={oneness}>一体感：☆☆☆☆☆</li>
