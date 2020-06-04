@@ -5,7 +5,7 @@ import Layout from '../components/layout'
 import CompetitionTitle from '../components/competitionTitle'
 import CompetitionMovies from '../components/CompetitionMovies'
 import db from '../lib/db'
-import { getTargets } from '../lib/mockCompetitionsDAO'
+import { getTargets, addTargets } from '../lib/mockCompetitionsDAO'
 
 export default function Judge({id, title, targets}) {
   const router = useRouter();
@@ -15,6 +15,17 @@ export default function Judge({id, title, targets}) {
   }
   const href = { pathname: '/competitions', query: query }
   const handleClick = (e) => {
+    // TODO: 評価送信 （上書き保存）
+    targets.forEach(target => {
+      // TODO: ratingStateから変換する
+      const data = {
+        comment: '',
+        smile: 2,
+        heat: 1,
+        oneness_: 3
+      };
+      addResults(db, id, target.id, data);      
+    });
     router.push(href)
   }
 
