@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import db from '../lib/db'
-// import { getCompetitions } from '../lib/competitionsDAO'
-import { getCompetitions } from '../lib/mockCompetitionsDAO'
+import { getCompetitions } from '../lib/competitionsDAO'
+// import { getCompetitions } from '../lib/mockCompetitionsDAO'
 
 class LatestCompetitions extends React.Component {
   constructor(props) {

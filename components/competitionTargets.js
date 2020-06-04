@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import db from '../lib/db'
-// import { getTargets } from '../lib/competitionsDAO'
-import { getTargets } from '../lib/mockCompetitionsDAO'
+import { getTargets } from '../lib/competitionsDAO'
+// import { getTargets } from '../lib/mockCompetitionsDAO'
 
 // 審査対象
 export default function competitionTargets(props) {

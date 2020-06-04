@@ -5,7 +5,8 @@ import Layout from '../components/layout'
 import CompetitionTitle from '../components/competitionTitle'
 import CompetitionMovies from '../components/CompetitionMovies'
 import db from '../lib/db'
-import { getTargets, addTargets } from '../lib/mockCompetitionsDAO'
+import { getTargets, addResults } from '../lib/competitionsDAO'
+// import { getTargets, addTargets } from '../lib/mockCompetitionsDAO'
 
 export default function Judge({id, title, targets}) {
   const router = useRouter();
@@ -14,20 +15,6 @@ export default function Judge({id, title, targets}) {
     title: title
   }
   const href = { pathname: '/competitions', query: query }
-  const handleClick = (e) => {
-    // TODO: 評価送信 （上書き保存）
-    targets.forEach(target => {
-      // TODO: ratingStateから変換する
-      const data = {
-        comment: '',
-        smile: 2,
-        heat: 1,
-        oneness_: 3
-      };
-      addResults(db, id, target.id, data);      
-    });
-    router.push(href)
-  }
 
   const initialRatingState = (videoId) => {
     return (
@@ -51,14 +38,43 @@ export default function Judge({id, title, targets}) {
     setRatingState(Object.assign(ratingState, {[targetId]: newValue}))
   }
 
+  const [judgerName, setJudgerName] = useState('');
+  const judger = (event) => {
+    setJudgerName(event.target.value)
+  }
+
+  const buildData = (videoID) => {
+    let data = {
+      judgerName: judgerName,
+      comment: '',
+      smile: '',
+      heat: '',
+      oneness: ''
+    };
+    for (let rawkey in ratingState) {
+      const reg = new RegExp(`_${videoID}`)
+      const key = rawkey.replace(reg, '');
+      data[key] = ratingState[rawkey];
+    }
+    return data;
+  }
+
+  const postJudge = () => {
+    targets.forEach(target => {
+      addResults(db, id, target.id, buildData(target.videoID));      
+    });
+    router.push(href)
+  }
+
   return (
     <Layout>
       <CompetitionTitle title={title} />
-      <CompetitionMovies targets={targets} rating={rating}/>
+      <CompetitionMovies targets={targets}
+        rating={rating} judger={judger}/>
       <Link href={href}>
         <button>戻る</button>
       </Link>
-      <button onClick={handleClick}>登録</button>
+      <button onClick={() => postJudge(judgerName)}>登録</button>
     </Layout>
   )
 }
