@@ -14,7 +14,6 @@ import { getJudgement, getCompetition } from '../lib/competitionsDAO'
 
 export default function Competitions({ id, title, targets, judgements }) {
 
-  //TODO: CompetitionResults に id を渡して、コンポーネントにデータを取得させる。
   const query = {
     id: id,
     title: title

@@ -16,10 +16,10 @@ class Registered extends React.Component {
   }
 
   componentDidMount() {
-    holdCompetition(db, 'YOSAKOIソーラン一次審査 審査枠(2)')
-      .then(ref => {
-        this.setState({competitionID: ref.id})
-      });
+    // holdCompetition(db, 'YOSAKOIソーラン一次審査 審査枠(2)')
+    //   .then(ref => {
+    //     this.setState({competitionID: ref.id})
+    //   });
   }
 
   render() {
