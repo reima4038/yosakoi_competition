@@ -5,8 +5,8 @@ import Layout from '../components/layout'
 import CompetitionTitle from '../components/competitionTitle'
 import CompetitionMovies from '../components/CompetitionMovies'
 import db from '../lib/db'
-import { getTargets, addJudgement } from '../lib/competitionsDAO'
-// import { getTargets, addJudgement } from '../lib/mockVompetitionsDAO'
+import { addJudgement, getCompetition } from '../lib/competitionsDAO'
+// import { getTargets, addJudgement } from '../lib/mockCompetitionsDAO'
 
 export default function Judge({id, title, targets}) {
   const router = useRouter();
@@ -92,12 +92,13 @@ export default function Judge({id, title, targets}) {
 }
 
 export async function getServerSideProps(context) {
-  const targets = await getTargets(db, context.query.id)
+  const competitionID = context.query.id;
+  const competition = await getCompetition(db, competitionID);
   return {
     props: {
       id: context.query.id,
       title: context.query.title,
-      targets: targets
+      targets: competition.targets
     }
   }
 }

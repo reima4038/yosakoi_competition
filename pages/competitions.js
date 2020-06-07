@@ -8,15 +8,11 @@ import CompetitionResults from '../components/competitionResults'
 import CompetitionResultGraph from '../components/competitionResultGraph'
 
 import db from '../lib/db'
-// import { getJudgement } from '../lib/mockCompetitionsDAO'
-import { getJudgement } from '../lib/competitionsDAO'
+// import { getJudgement, getCompetition } from '../lib/mockCompetitionsDAO'
+import { getJudgement, getCompetition } from '../lib/competitionsDAO'
 
 
-export default function Competitions({ id, title, judgements }) {
-
-  // FIXME: デバッグ終わったら消す。
-  console.log('judgements are ...');
-  console.log(JSON.stringify(judgements, null, '\t'));
+export default function Competitions({ id, title, targets, judgements }) {
 
   //TODO: CompetitionResults に id を渡して、コンポーネントにデータを取得させる。
   const query = {
@@ -24,11 +20,10 @@ export default function Competitions({ id, title, judgements }) {
     title: title
   }
 
-  //TODO: CompetitionTargetsからDB呼び出しをPage側に持ってくる
   return (
     <Layout>
       <CompetitionTitle title={query.title} />
-      <CompetitionTargets competitionID={query.id} />
+      <CompetitionTargets targets={targets} />
 
       <Link href={{ pathname: "/judge", query: query }}>
         <button>審査</button>
@@ -47,12 +42,14 @@ export default function Competitions({ id, title, judgements }) {
 
 export async function getServerSideProps(context) {
   const competitionID = context.query.id;
+  const competition = await getCompetition(db, competitionID);
   const judgements = await getJudgement(db, competitionID);
 
   return {
     props: {
       id: competitionID,
       title: context.query.title,
+      targets: competition.targets,
       judgements: judgements
     }
   }
