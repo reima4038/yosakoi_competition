@@ -1,24 +1,27 @@
-// 審査結果
+import Link from 'next/link';
 
-export default function competitonResults() {
-  const mock_results = [
-    'よさこい太郎 2020/05/20',
-    'ソーラン次郎 2020/05/20',
-    'どまつり三郎 2020/05/20',
-    'みちのく四郎 2020/05/20',
-    'させぼ五郎丸 2020/05/20',
-  ]
-  const competition_results = []
+// 審査結果
+export default function competitonResults({ judgements }) {
+
+  const href = (id, title, judgerName) => {
+    return ({
+      pathname: '/result',
+      query: { id: id, title: title, judgerName: judgerName }
+    })
+  };
+
   const offset = 1;
-  mock_results.forEach((result, i) => {
-    competition_results.push(<li>#{i + offset} {result}</li>)
+  const tags = []
+  judgements.forEach((judgement, i) => {
+    tags.push(<li><Link href={href(judgement.competitionID, judgement.title, judgement.judgerName)}><a>#{i + offset}{judgement.judgerName}</a></Link></li>)
   })
+
   
   return(
     <div>
       <h2>審査結果</h2>
       <ul>
-        {competition_results}
+        {tags}
       </ul>
     </div>
   );

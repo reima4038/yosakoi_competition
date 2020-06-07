@@ -5,12 +5,13 @@ import YouTubeEmbedVideo from './youtubeEmbedVideo'
 import RatingItem from './RatingItem'
 
 // 評価対象の演舞リスト
-export default function competitionMovies({ targets, rating, judger }) {
+export default function competitionMovies({ targets, ratingHandler, judgerHandler, commentHandler }) {
 
   const competitionMovie = (videoID, title) => {
     const smile = 'smile_' + videoID;
     const heat = 'heat_' + videoID;
     const oneness = 'oneness_' + videoID;
+    const comment = 'comment_' + videoID;
 
     return (
       <React.Fragment key={videoID}>
@@ -18,15 +19,19 @@ export default function competitionMovies({ targets, rating, judger }) {
         <YouTubeEmbedVideo videoId={videoID} />
         <h3>審査項目</h3>
         <ul>
-          <RatingItem uniqueKey={smile} label='笑顔' onChange={rating} />
-          <RatingItem uniqueKey={heat} label='熱量' onChange={rating} />
-          <RatingItem uniqueKey={oneness} label='一体感' onChange={rating} />
+          <RatingItem uniqueKey={smile} label='笑顔' onChange={ratingHandler} />
+          <RatingItem uniqueKey={heat} label='熱量' onChange={ratingHandler} />
+          <RatingItem uniqueKey={oneness} label='一体感' onChange={ratingHandler} />
         </ul>
-        <h3>コメント（140字まで）</h3>
-        <TextareaAutosize aria-label="comments"
-          rowsMin={3}
-          placeholder="感想をお書きください。"
-          />
+        <TextField
+          id={comment}
+          name={comment}
+          label="コメント（140字まで）"
+          multiline
+          rows={4}
+          onChange={commentHandler}
+          variant="outlined"
+        />
         <hr />
       </React.Fragment>
       )
@@ -41,7 +46,7 @@ export default function competitionMovies({ targets, rating, judger }) {
       <CompetitionTargetNumbers numbers={movieTags.length}/>
       {movieTags}
       <TextField id="judgerName" label="審査員名"
-        variant="outlined" onChange={(e) => judger(e)}/>
+        variant="outlined" onChange={(e) => judgerHandler(e)}/>
     </div>
   );
 }

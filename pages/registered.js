@@ -1,7 +1,8 @@
 import Link from 'next/link'
 
 import db from '../lib/db'
-import {holdCompetition} from '../lib/competitionsDAO'
+// import {holdCompetition} from '../lib/competitionsDAO'
+import {holdCompetition} from '../lib/mockCompetitionsDAO'
 import Layout from '../components/layout'
 import CompetitionPageURL from '../components/competitionPageURL'
 

@@ -5,8 +5,8 @@ import Layout from '../components/layout'
 import CompetitionTitle from '../components/competitionTitle'
 import CompetitionMovies from '../components/CompetitionMovies'
 import db from '../lib/db'
-import { getTargets, addResults } from '../lib/competitionsDAO'
-// import { getTargets, addTargets } from '../lib/mockCompetitionsDAO'
+import { getTargets, addJudgement } from '../lib/competitionsDAO'
+// import { getTargets, addJudgement } from '../lib/mockVompetitionsDAO'
 
 export default function Judge({id, title, targets}) {
   const router = useRouter();
@@ -22,6 +22,7 @@ export default function Judge({id, title, targets}) {
         ['smile_' + videoId]: 2,
         ['heat_' + videoId]: 2,
         ['oneness_' + videoId]: 2,
+        ['comment_' + videoId]: ''
       }
     )
   }
@@ -31,11 +32,17 @@ export default function Judge({id, title, targets}) {
     .forEach(state => Object.assign(ratingStats, state));
   const [ratingState, setRatingState] = useState(ratingStats);
 
-  const rating = (event, newValue) => {
+  const rating = (event) => {
     // event.target.id のフォーマット: {category}_{videoID}-[0-9]
     // 状態管理のIDとしては横並びの★ごとを一意に識別する下二桁が不要。
     const targetId = event.target.id.slice(0, -2);
-    setRatingState(Object.assign(ratingState, {[targetId]: newValue}))
+    setRatingState(Object.assign(ratingState, {[targetId]: event.target.value}))
+  }
+
+  const comment = (event) => {
+    // コメント欄の場合は下二桁に一意識別のための数値がないため、そのままtarget.idを渡す。
+    const targetId = event.target.id;
+    setRatingState(Object.assign(ratingState, {[targetId]: event.target.value}))
   }
 
   const [judgerName, setJudgerName] = useState('');
@@ -43,26 +50,31 @@ export default function Judge({id, title, targets}) {
     setJudgerName(event.target.value)
   }
 
-  const buildData = (videoID) => {
-    let data = {
-      judgerName: judgerName,
-      comment: '',
-      smile: '',
-      heat: '',
-      oneness: ''
-    };
-    for (let rawkey in ratingState) {
-      const reg = new RegExp(`_${videoID}`)
-      const key = rawkey.replace(reg, '');
-      data[key] = ratingState[rawkey];
-    }
-    return data;
-  }
-
   const postJudge = () => {
+    const targetData = [];
     targets.forEach(target => {
-      addResults(db, id, target.id, buildData(target.videoID));      
+      // targetDataに値を設定
+      let data = {
+        videoID: target.videoID,
+        title: target.title,
+      }
+      for (let rawkey in ratingState) {
+        const reg = new RegExp(`_${target.videoID}`)
+        if(rawkey.search(reg) !== -1) {
+          const key = rawkey.replace(reg, '');
+          data[key] = ratingState[rawkey];  
+        }
+      }
+      targetData.push(data)
     });
+
+    const judgementData = {
+      competitionID: id,
+      title: title,
+      judgerName: judgerName,
+      target: targetData
+    };
+    addJudgement(db, judgementData);
     router.push(href)
   }
 
@@ -70,7 +82,7 @@ export default function Judge({id, title, targets}) {
     <Layout>
       <CompetitionTitle title={title} />
       <CompetitionMovies targets={targets}
-        rating={rating} judger={judger}/>
+        ratingHandler={rating} judgerHandler={judger} commentHandler={comment}/>
       <Link href={href}>
         <button>戻る</button>
       </Link>

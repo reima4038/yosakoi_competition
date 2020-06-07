@@ -15,9 +15,12 @@ export default function competitionResultGraph() {
     graph_items.push(<li>({i + offset}) {title}</li>)
   })
 
+  // TODO: Chartjsの導入
+  // https://github.com/jerairrest/react-chartjs-2
   return (
     <div>
       <h2>審査結果集計</h2>
+      
       [TODO] ここにグラフ
       <ul>
         {graph_items}
