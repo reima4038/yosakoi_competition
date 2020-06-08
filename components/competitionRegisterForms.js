@@ -14,17 +14,17 @@ export default function CompetitionRegisterForms() {
   
   //TODO: もうちょい精度高めたい。NGケース：list以降を持たない文字列。
   const videoIDOf = (youtubeUrl) => {
-    return youtubeUrl.replace(/https:.*\/watch\?v=(.*)&list.*/g, "$1");
+    return youtubeUrl.replace(/&list.*/g, '').replace(/https:.*\/watch\?v=(.*)/g, "$1");
   }
 
   const handleChange = (event) => {
     if (event.target.id === COMPETITION_TITLE_ID) {
       setState(Object.assign(state, {[COMPETITION_TITLE_ID]: event.target.value}));
-    } else if (event.target.id.match(TARGET_TITLE_SUFFIX)){
+    } else if (event.target.id.match(TARGET_VIDEOID_SUFFIX)){
       setState(Object.assign(state, {
         [event.target.id]: videoIDOf(event.target.value)
       }));
-    } else if (event.target.id.match(TARGET_VIDEOID_SUFFIX)) {
+    } else if (event.target.id.match(TARGET_TITLE_SUFFIX)) {
       setState(Object.assign(state, {
         [event.target.id]: event.target.value
       }));
@@ -51,9 +51,15 @@ export default function CompetitionRegisterForms() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(dataOf(state));
-    holdCompetition(db, dataOf(state));
-    Router.push('/registered')
+    holdCompetition(db, dataOf(state))
+      .then(ref => {
+        Router.push({ pathname: "/registered", query:
+          { 
+            id: ref.id,
+            title: state[COMPETITION_TITLE_ID]
+          }
+        })
+      });
   }
   
   const textFields = () => {
