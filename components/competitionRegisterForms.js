@@ -9,6 +9,7 @@ export default function CompetitionRegisterForms() {
   const TARGET_FORM_ID = 'targetForm';
   const TARGET_TITLE_SUFFIX = '_title';
   const TARGET_VIDEOID_SUFFIX = '_videoID';
+  const TARGET_MAX_NUMBER = 5;
   const [state, setState] = useState({});
   
   //TODO: もうちょい精度高めたい。NGケース：list以降を持たない文字列。
@@ -16,18 +17,16 @@ export default function CompetitionRegisterForms() {
     return youtubeUrl.replace(/https:.*\/watch\?v=(.*)&list.*/g, "$1");
   }
 
-  const titleOf = (youtubeUrl) => {
-    // TODO: Youtubeのタイトルを取得する。こんなんでYoutubeDataAPIのリクエスト使う？
-    return youtubeUrl;
-  }
-
   const handleChange = (event) => {
-    if (event.target.id == COMPETITION_TITLE_ID) {
+    if (event.target.id === COMPETITION_TITLE_ID) {
       setState(Object.assign(state, {[COMPETITION_TITLE_ID]: event.target.value}));
-    } else {
+    } else if (event.target.id.match(TARGET_TITLE_SUFFIX)){
       setState(Object.assign(state, {
-        [event.target.id + TARGET_TITLE_SUFFIX]: videoIDOf(event.target.value),
-        [event.target.id + TARGET_VIDEOID_SUFFIX]: titleOf(event.target.value)
+        [event.target.id]: videoIDOf(event.target.value)
+      }));
+    } else if (event.target.id.match(TARGET_VIDEOID_SUFFIX)) {
+      setState(Object.assign(state, {
+        [event.target.id]: event.target.value
       }));
     }
   }
@@ -37,7 +36,7 @@ export default function CompetitionRegisterForms() {
   }
   const dataOf = (state) => {
     const targets = [];
-    for (let i = 1; i < 6; i++) {
+    for (let i = 0; i < TARGET_MAX_NUMBER; i++) {
       const title = state[TARGET_FORM_ID + i + TARGET_TITLE_SUFFIX];
       const videoID = state[TARGET_FORM_ID + i + TARGET_VIDEOID_SUFFIX];
       if (title !== undefined && videoID !== undefined ) {
@@ -56,7 +55,23 @@ export default function CompetitionRegisterForms() {
     holdCompetition(db, dataOf(state));
     Router.push('/registered')
   }
-
+  
+  const textFields = () => {
+    const textFields = [];
+    const offset = 1;
+    for (let i = 0; i < TARGET_MAX_NUMBER; i++) {
+      const key = `${TARGET_FORM_ID}${i}`;
+      const urlFieldId = `${TARGET_FORM_ID}${i}`;
+      const label =  `審査演舞${i + offset}`;
+      textFields.push(
+        <li key={key}>
+          <TextField id={urlFieldId + TARGET_TITLE_SUFFIX} label={label + 'タイトル'} variant="outlined" size='small' onChange={handleChange} />
+          <TextField id={urlFieldId + TARGET_VIDEOID_SUFFIX} label={'YouTube動画URL'} variant="outlined" size='small' onChange={handleChange} />
+        </li>
+      )
+    }
+    return textFields;
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -70,11 +85,7 @@ export default function CompetitionRegisterForms() {
       <h2>審査対象演舞</h2>
       <p>YouTubeの動画URLを指定してください。（5個まで）</p>
       <ur>
-        <li key='targetForm1'><TextField id="targetForm1" label="審査演舞1" variant="outlined" size='small' onChange={handleChange} /></li>
-        <li key='targetForm2'><TextField id="targetForm2" label="審査演舞2" variant="outlined" size='small' onChange={handleChange} /></li>
-        <li key='targetForm3'><TextField id="targetForm3" label="審査演舞3" variant="outlined" size='small' onChange={handleChange} /></li>
-        <li key='targetForm4'><TextField id="targetForm4" label="審査演舞4" variant="outlined" size='small' onChange={handleChange} /></li>
-        <li key='targetForm5'><TextField id="targetForm5" label="審査演舞5" variant="outlined" size='small' onChange={handleChange} /></li>
+        {textFields()}
       </ur>
       <input type="submit" value="作成" />
     </form>
