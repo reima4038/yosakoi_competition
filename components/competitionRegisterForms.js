@@ -1,16 +1,21 @@
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import Router from 'next/router'
 import { TextField } from '@material-ui/core'
+
 import db from '../lib/db' 
 import { holdCompetition } from '../lib/competitionsDAO' 
 
 export default function CompetitionRegisterForms() {
+  const { register, handleSubmit, errors } = useForm();
+
   const COMPETITION_TITLE_ID = 'competitionTitle';
   const TARGET_FORM_ID = 'targetForm';
   const TARGET_TITLE_SUFFIX = '_title';
   const TARGET_VIDEOID_SUFFIX = '_videoID';
   const TARGET_MAX_NUMBER = 5;
   const [state, setState] = useState({});
+  
   
   //TODO: もうちょい精度高めたい。NGケース：list以降を持たない文字列。
   const videoIDOf = (youtubeUrl) => {
@@ -49,8 +54,7 @@ export default function CompetitionRegisterForms() {
     }
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const onSubmit = () => {
     holdCompetition(db, dataOf(state))
       .then(ref => {
         Router.push({ pathname: "/registered", query:
@@ -71,8 +75,14 @@ export default function CompetitionRegisterForms() {
       const label =  `審査演舞${i + offset}`;
       textFields.push(
         <li key={key}>
-          <TextField id={urlFieldId + TARGET_TITLE_SUFFIX} label={label + 'タイトル'} variant="outlined" size='small' onChange={handleChange} />
-          <TextField id={urlFieldId + TARGET_VIDEOID_SUFFIX} label={'YouTube動画URL'} variant="outlined" size='small' onChange={handleChange} />
+          <TextField id={urlFieldId + TARGET_TITLE_SUFFIX} name={urlFieldId + TARGET_TITLE_SUFFIX}
+            label={label + 'タイトル'} variant="outlined" size='small' onChange={handleChange}
+            inputRef={register}
+          />
+          <TextField id={urlFieldId + TARGET_VIDEOID_SUFFIX} name={urlFieldId + TARGET_VIDEOID_SUFFIX}
+            label={'YouTube動画URL'} variant="outlined" size='small' onChange={handleChange}
+            inputRef={register}
+          />
         </li>
       )
     }
@@ -80,14 +90,20 @@ export default function CompetitionRegisterForms() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <h1>審査会の準備</h1>
       <TextField id={COMPETITION_TITLE_ID}
+        name={COMPETITION_TITLE_ID}
         label="審査タイトル(30文字まで)"
+        type="text"
         variant="outlined"
         onChange={handleChange}
         size='small'
-        fullWidth />
+        fullWidth
+        inputRef={register({required: '必須入力です。', maxLength: {value: 10, message:'１０文字以内で入力して下さい。'}})}
+        error={Boolean(errors[COMPETITION_TITLE_ID])}
+        helperText={errors[COMPETITION_TITLE_ID]?.message}
+      />
       <h2>審査対象演舞</h2>
       <p>YouTubeの動画URLを指定してください。（5個まで）</p>
       <ur>
