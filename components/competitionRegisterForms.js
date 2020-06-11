@@ -16,8 +16,6 @@ export default function CompetitionRegisterForms() {
   const TARGET_MAX_NUMBER = 5;
   const [state, setState] = useState({});
   
-  
-  //TODO: もうちょい精度高めたい。NGケース：list以降を持たない文字列。
   const videoIDOf = (youtubeUrl) => {
     return youtubeUrl.replace(/&list.*/g, '').replace(/https:.*\/watch\?v=(.*)/g, "$1");
   }
@@ -46,6 +44,8 @@ export default function CompetitionRegisterForms() {
       const videoID = state[TARGET_FORM_ID + i + TARGET_VIDEOID_SUFFIX];
       if (title !== undefined && videoID !== undefined ) {
         targets.push(targetOf(title, videoID));
+      } else if (title == undefined && videoID !== undefined ) {
+        targets.push(targetOf(videoID, videoID));
       }
     }
     return {
@@ -69,7 +69,25 @@ export default function CompetitionRegisterForms() {
   const textFields = () => {
     const textFields = [];
     const offset = 1;
-    for (let i = 0; i < TARGET_MAX_NUMBER; i++) {
+
+    // 必須入力項目
+    textFields.push(
+      <li key={TARGET_FORM_ID + 0}>
+        <TextField id={TARGET_FORM_ID + 0 + TARGET_TITLE_SUFFIX} name={TARGET_FORM_ID + 0 + TARGET_TITLE_SUFFIX}
+          label={'審査演舞' + 1 + 'タイトル'} variant="outlined" size='small' onChange={handleChange}
+          inputRef={register}
+        />
+        <TextField id={TARGET_FORM_ID + 0 + TARGET_VIDEOID_SUFFIX} name={TARGET_FORM_ID + 0 + TARGET_VIDEOID_SUFFIX}
+          label={'YouTube動画URL'} variant="outlined" size='small' onChange={handleChange}
+          inputRef={register({required: '審査対象の演舞動画は最低一つ登録してください。'})}
+          error={Boolean(errors[TARGET_FORM_ID + 0 + TARGET_VIDEOID_SUFFIX])}
+          helperText={errors[TARGET_FORM_ID + 0 + TARGET_VIDEOID_SUFFIX]?.message}
+        />
+      </li>
+    )
+    
+    // 非必須入力項目
+    for (let i = 1; i < TARGET_MAX_NUMBER; i++) {
       const key = `${TARGET_FORM_ID}${i}`;
       const urlFieldId = `${TARGET_FORM_ID}${i}`;
       const label =  `審査演舞${i + offset}`;
@@ -100,12 +118,12 @@ export default function CompetitionRegisterForms() {
         onChange={handleChange}
         size='small'
         fullWidth
-        inputRef={register({required: '必須入力です。', maxLength: {value: 10, message:'１０文字以内で入力して下さい。'}})}
+        inputRef={register({required: 'タイトルは必須入力です。', maxLength: {value: 30, message:'タイトルは30文字以内として下さい。'}})}
         error={Boolean(errors[COMPETITION_TITLE_ID])}
         helperText={errors[COMPETITION_TITLE_ID]?.message}
       />
       <h2>審査対象演舞</h2>
-      <p>YouTubeの動画URLを指定してください。（5個まで）</p>
+      <p>YouTubeの動画URLを最低１つ指定してください。タイトルは任意入力です。未指定の場合は動画IDがタイトルとなります。</p>      
       <ur>
         {textFields()}
       </ur>
