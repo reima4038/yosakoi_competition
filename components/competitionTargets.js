@@ -7,8 +7,9 @@ import { getTargets } from '../lib/mockCompetitionsDAO'
 export default function competitionTargets({ targets }) {
 
   const tags = [];
+  const baseurl = 'https://www.youtube.com/watch?v=';
   targets?.forEach(target => {
-    tags.push(<li key={target.videoID}>{target.title}</li>)
+    tags.push(<li key={target.videoID}><a href={baseurl + target.videoID}>{target.title}</a></li>)
   });
 
   return (
