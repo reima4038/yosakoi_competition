@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import Layout from '../components/layout'
 import CompetitionTitle from '../components/competitionTitle'
 import CompetitionMovies from '../components/CompetitionMovies'
@@ -9,6 +10,8 @@ import { addJudgement, getCompetition } from '../lib/competitionsDAO'
 // import { getTargets, addJudgement } from '../lib/mockCompetitionsDAO'
 
 export default function Judge({id, title, targets}) {
+  const { register, handleSubmit, errors } = useForm();
+
   const router = useRouter();
   const query = {
     id: id,
@@ -81,12 +84,16 @@ export default function Judge({id, title, targets}) {
   return (
     <Layout>
       <CompetitionTitle title={title} />
-      <CompetitionMovies targets={targets}
-        ratingHandler={rating} judgerHandler={judger} commentHandler={comment}/>
-      <Link href={href}>
-        <button>戻る</button>
-      </Link>
-      <button onClick={() => postJudge(judgerName)}>登録</button>
+        <CompetitionMovies targets={targets}
+          ratingHandler={rating}
+          judgerHandler={judger}
+          commentHandler={comment}
+          register={register}
+          errors={errors}/>
+        <Link href={href}>
+          <button>戻る</button>
+        </Link>
+        <button onClick={handleSubmit(postJudge)}>登録</button>
     </Layout>
   )
 }

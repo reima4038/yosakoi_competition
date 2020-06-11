@@ -5,7 +5,8 @@ import YouTubeEmbedVideo from './youtubeEmbedVideo'
 import RatingItem from './RatingItem'
 
 // 評価対象の演舞リスト
-export default function competitionMovies({ targets, ratingHandler, judgerHandler, commentHandler }) {
+export default function competitionMovies({ targets, ratingHandler,
+  judgerHandler, commentHandler, register, errors }) {
 
   const competitionMovie = (videoID, title) => {
     const smile = 'smile_' + videoID;
@@ -45,8 +46,12 @@ export default function competitionMovies({ targets, ratingHandler, judgerHandle
     <div>
       <CompetitionTargetNumbers numbers={movieTags.length}/>
       {movieTags}
-      <TextField id="judgerName" label="審査員名"
-        variant="outlined" onChange={(e) => judgerHandler(e)}/>
+      <TextField id="judgerName" name="judgerName" label="審査員名"
+        variant="outlined" onChange={(e) => judgerHandler(e)}
+        inputRef={register({required: '審査員名は必須入力です。'})}
+        error={Boolean(errors['judgerName'])}
+        helperText={errors['judgerName']?.message}
+      />
     </div>
   );
 }
