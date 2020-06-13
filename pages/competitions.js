@@ -29,7 +29,7 @@ export default function Competitions({ id, title, targets, judgements }) {
       </Link>
 
       <CompetitionResults judgements={judgements}/>
-      <CompetitionResultGraph />
+      <CompetitionResultGraph targets={targets} judgements={judgements} />
       <CompetitionPageURL competitionID={id}/>
       
       <Link href='/'>
