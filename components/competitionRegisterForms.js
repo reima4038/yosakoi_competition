@@ -2,9 +2,17 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Router from 'next/router'
 import { TextField } from '@material-ui/core'
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Button from '@material-ui/core/Button'
 
 import db from '../lib/db' 
 import { holdCompetition } from '../lib/competitionsDAO' 
+
 
 export default function CompetitionRegisterForms() {
   const { register, handleSubmit, errors } = useForm();
@@ -72,62 +80,74 @@ export default function CompetitionRegisterForms() {
 
     // 必須入力項目
     textFields.push(
-      <li key={TARGET_FORM_ID + 0}>
-        <TextField id={TARGET_FORM_ID + 0 + TARGET_TITLE_SUFFIX} name={TARGET_FORM_ID + 0 + TARGET_TITLE_SUFFIX}
-          label={'審査演舞' + 1 + 'タイトル'} variant="outlined" size='small' onChange={handleChange}
-          inputRef={register}
-        />
-        <TextField id={TARGET_FORM_ID + 0 + TARGET_VIDEOID_SUFFIX} name={TARGET_FORM_ID + 0 + TARGET_VIDEOID_SUFFIX}
-          label={'YouTube動画URL'} variant="outlined" size='small' onChange={handleChange}
-          inputRef={register({required: '審査対象の演舞動画は最低一つ登録してください。'})}
-          error={Boolean(errors[TARGET_FORM_ID + 0 + TARGET_VIDEOID_SUFFIX])}
-          helperText={errors[TARGET_FORM_ID + 0 + TARGET_VIDEOID_SUFFIX]?.message}
-        />
-      </li>
+      <ListItem key={TARGET_FORM_ID + 0}>
+        <div>
+          <ListItemText primary="審査演舞1"/>
+          <div>
+            <TextField id={TARGET_FORM_ID + 0 + TARGET_TITLE_SUFFIX} name={TARGET_FORM_ID + 0 + TARGET_TITLE_SUFFIX}
+              label={'タイトル'} variant="outlined" size='small' onChange={handleChange}
+              inputRef={register}
+            />
+            <TextField id={TARGET_FORM_ID + 0 + TARGET_VIDEOID_SUFFIX} name={TARGET_FORM_ID + 0 + TARGET_VIDEOID_SUFFIX}
+              label={'YouTube動画URL'} variant="outlined" size='small' onChange={handleChange}
+              inputRef={register({required: '審査対象の演舞動画は最低一つ登録してください。'})}
+              error={Boolean(errors[TARGET_FORM_ID + 0 + TARGET_VIDEOID_SUFFIX])}
+              helperText={errors[TARGET_FORM_ID + 0 + TARGET_VIDEOID_SUFFIX]?.message}
+            />
+          </div>
+        </div>
+      </ListItem>
     )
     
     // 非必須入力項目
     for (let i = 1; i < TARGET_MAX_NUMBER; i++) {
       const key = `${TARGET_FORM_ID}${i}`;
       const urlFieldId = `${TARGET_FORM_ID}${i}`;
-      const label =  `審査演舞${i + offset}`;
+      const label = `審査演舞${i + offset}`;
       textFields.push(
-        <li key={key}>
-          <TextField id={urlFieldId + TARGET_TITLE_SUFFIX} name={urlFieldId + TARGET_TITLE_SUFFIX}
-            label={label + 'タイトル'} variant="outlined" size='small' onChange={handleChange}
-            inputRef={register}
-          />
-          <TextField id={urlFieldId + TARGET_VIDEOID_SUFFIX} name={urlFieldId + TARGET_VIDEOID_SUFFIX}
-            label={'YouTube動画URL'} variant="outlined" size='small' onChange={handleChange}
-            inputRef={register}
-          />
-        </li>
+        <ListItem key={key}>
+          <div>
+            <ListItemText>{label}</ListItemText>
+            <div>
+              <TextField id={urlFieldId + TARGET_TITLE_SUFFIX} name={urlFieldId + TARGET_TITLE_SUFFIX}
+                label={'タイトル'} variant="outlined" size='small' onChange={handleChange}
+                inputRef={register}
+              />
+              <TextField id={urlFieldId + TARGET_VIDEOID_SUFFIX} name={urlFieldId + TARGET_VIDEOID_SUFFIX}
+                label={'YouTube動画URL'} variant="outlined" size='small' onChange={handleChange}
+                inputRef={register}
+              />
+            </div>
+          </div>
+        </ListItem>
       )
     }
     return textFields;
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <h1>審査会の準備</h1>
-      <TextField id={COMPETITION_TITLE_ID}
-        name={COMPETITION_TITLE_ID}
-        label="審査タイトル(30文字まで)"
-        type="text"
-        variant="outlined"
-        onChange={handleChange}
-        size='small'
-        fullWidth
-        inputRef={register({required: 'タイトルは必須入力です。', maxLength: {value: 30, message:'タイトルは30文字以内として下さい。'}})}
-        error={Boolean(errors[COMPETITION_TITLE_ID])}
-        helperText={errors[COMPETITION_TITLE_ID]?.message}
-      />
-      <h2>審査対象演舞</h2>
-      <p>YouTubeの動画URLを最低１つ指定してください。タイトルは任意入力です。未指定の場合は動画IDがタイトルとなります。</p>      
-      <ur>
-        {textFields()}
-      </ur>
-      <input type="submit" value="作成" />
-    </form>
+    <Paper>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Typography variant="h5">審査会の準備</Typography>
+        <TextField id={COMPETITION_TITLE_ID}
+          name={COMPETITION_TITLE_ID}
+          label="審査タイトル(30文字まで)"
+          type="text"
+          variant="outlined"
+          onChange={handleChange}
+          size='small'
+          fullWidth
+          inputRef={register({required: '審査タイトルは必須入力です。', maxLength: {value: 30, message:'審査タイトルは30文字以内として下さい。'}})}
+          error={Boolean(errors[COMPETITION_TITLE_ID])}
+          helperText={errors[COMPETITION_TITLE_ID]?.message}
+        />
+        <Typography variant="h6">審査会の準備</Typography>
+        <Typography variant="body2">YouTubeの動画URLを最低１つ指定してください。タイトルは任意入力です。（未入力の場合、動画IDがタイトルとなります）</Typography>
+        <List>
+          {textFields()}
+        </List>
+        <Button variant="contained" type="submit" color="primary">審査会を作成する</Button>
+      </form>
+    </Paper>
   );
 }

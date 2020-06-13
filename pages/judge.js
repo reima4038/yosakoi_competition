@@ -84,16 +84,16 @@ export default function Judge({id, title, targets}) {
   return (
     <Layout>
       <CompetitionTitle title={title} />
-        <CompetitionMovies targets={targets}
-          ratingHandler={rating}
-          judgerHandler={judger}
-          commentHandler={comment}
-          register={register}
-          errors={errors}/>
-        <Link href={href}>
-          <button>戻る</button>
-        </Link>
-        <button onClick={handleSubmit(postJudge)}>登録</button>
+      <CompetitionMovies targets={targets}
+        ratingHandler={rating}
+        judgerHandler={judger}
+        commentHandler={comment}
+        register={register}
+        errors={errors}/>
+      <Link href={href}>
+        <button>戻る</button>
+      </Link>
+      <button onClick={handleSubmit(postJudge)}>登録</button>
     </Layout>
   )
 }

@@ -5,8 +5,7 @@ import LatestCompetitions from '../components/latestCompetitions'
 export default function TopPage() {
   return (
     <Layout>
-      <CompetitionRegisterForms/>
-      <hr />
+      <CompetitionRegisterForms />
       <LatestCompetitions />
     </Layout>
   )
