@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Router from 'next/router'
-import { TextField } from '@material-ui/core'
+import { TextField, Box } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
@@ -9,12 +9,20 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Button from '@material-ui/core/Button'
+import { makeStyles } from '@material-ui/core/styles'
 
 import db from '../lib/db' 
 import { holdCompetition } from '../lib/competitionsDAO' 
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: '16px 16px 16px 16px'
+  },
+}));
 
 export default function CompetitionRegisterForms() {
+  const classes = useStyles();
+
   const { register, handleSubmit, errors } = useForm();
 
   const COMPETITION_TITLE_ID = 'competitionTitle';
@@ -128,25 +136,29 @@ export default function CompetitionRegisterForms() {
   return (
     <Paper>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h5">審査会の準備</Typography>
-        <TextField id={COMPETITION_TITLE_ID}
-          name={COMPETITION_TITLE_ID}
-          label="審査タイトル(30文字まで)"
-          type="text"
-          variant="outlined"
-          onChange={handleChange}
-          size='small'
-          fullWidth
-          inputRef={register({required: '審査タイトルは必須入力です。', maxLength: {value: 30, message:'審査タイトルは30文字以内として下さい。'}})}
-          error={Boolean(errors[COMPETITION_TITLE_ID])}
-          helperText={errors[COMPETITION_TITLE_ID]?.message}
-        />
-        <Typography variant="h6">審査会の準備</Typography>
-        <Typography variant="body2">YouTubeの動画URLを最低１つ指定してください。タイトルは任意入力です。（未入力の場合、動画IDがタイトルとなります）</Typography>
-        <List>
-          {textFields()}
-        </List>
-        <Button variant="contained" type="submit" color="primary">審査会を作成する</Button>
+        <Box className={classes.root}>
+          <Typography variant="h5">審査会の準備</Typography>
+          <TextField id={COMPETITION_TITLE_ID}
+            name={COMPETITION_TITLE_ID}
+            label="審査タイトル(30文字まで)"
+            type="text"
+            variant="outlined"
+            onChange={handleChange}
+            size='small'
+            fullWidth
+            inputRef={register({required: '審査タイトルは必須入力です。', maxLength: {value: 30, message:'審査タイトルは30文字以内として下さい。'}})}
+            error={Boolean(errors[COMPETITION_TITLE_ID])}
+            helperText={errors[COMPETITION_TITLE_ID]?.message}
+          />
+        </Box>
+        <Box className={classes.root}>
+          <Typography variant="h6">審査会の準備</Typography>
+          <Typography variant="body2">YouTubeの動画URLを最低１つ指定してください。タイトルは任意入力です。（未入力の場合、動画IDがタイトルとなります）</Typography>
+          <List>
+            {textFields()}
+          </List>
+          <Button variant="contained" type="submit" color="primary">審査会を作成する</Button>
+        </Box>
       </form>
     </Paper>
   );
