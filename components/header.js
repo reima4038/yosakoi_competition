@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography'
 
 export default function Header() {
   return (
-    <AppBar position="staic">
+    <AppBar position="static">
       <Toolbar>
         <Typography variant="h6">
           みんなでよさこい審査員（仮）
