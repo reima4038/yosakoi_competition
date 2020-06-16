@@ -1,11 +1,27 @@
 import CompetitionTargetNumbers from './competitionTargetsNumbers'
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import { TextField } from '@material-ui/core'
+import { 
+  Box,
+  TextField,
+  Paper,
+  Typography,
+  List,
+} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import YouTubeEmbedVideo from './youtubeEmbedVideo'
 import RatingItem from './RatingItem'
 
+const useStyles = makeStyles({
+  root: {
+    padding: '16px 16px 16px 16px'
+  },
+  moviesNumber: {
+    padding: '0px 16px 0px 16px'
+  }
+}) 
+
 // 評価対象の演舞リスト
 export default function CompetitionMoviesViewOnly({ targets, judgerName }) {
+  const classes = useStyles();
 
   const competitionMovie = (videoID, title, smile, heat, oneness, comment) => {
     const keySmile = 'smile_' + videoID;
@@ -14,15 +30,19 @@ export default function CompetitionMoviesViewOnly({ targets, judgerName }) {
     const keyComment = 'comment_' + videoID;
 
     return (
-      <React.Fragment key={videoID}>
-        <h3>{title}</h3>
+      <Paper className={classes.root}>
+        <Typography variant="h6">
+          <Box fontWeight="fontWeightBold">
+            {title}
+          </Box>
+        </Typography>
         <YouTubeEmbedVideo videoId={videoID} />
-        <h3>審査項目</h3>
-        <ul>
+        <Typography variant="h6">審査項目</Typography>
+        <List>
           <RatingItem uniqueKey={keySmile} label='笑顔' value={smile} readOnly={true} />
           <RatingItem uniqueKey={keyHeat} label='熱量' value={heat} readOnly={true} />
           <RatingItem uniqueKey={keyOneness} label='一体感' value={oneness} readOnly={true} />
-        </ul>
+        </List>
         <TextField
           id={keyComment}
           label="コメント（140字まで）"
@@ -30,9 +50,9 @@ export default function CompetitionMoviesViewOnly({ targets, judgerName }) {
           rows={4}
           value={comment}
           variant="outlined"
+          fullWidth
         />
-        <hr />
-      </React.Fragment>
+      </Paper>
       )
   }
 
@@ -42,12 +62,16 @@ export default function CompetitionMoviesViewOnly({ targets, judgerName }) {
     .forEach(tag => movieTags.push(tag));
 
   return (
-    <div>
-      <CompetitionTargetNumbers numbers={movieTags.length}/>
+    <Box>
+      <Paper className={classes.moviesNumber}>
+        <CompetitionTargetNumbers numbers={movieTags.length}/>
+      </Paper>
       {movieTags}
-      <TextField id="judgerName" label="審査員名"
-        variant="outlined" defaultValue={judgerName} disabled/>
-    </div>
+      <Paper className={classes.root}>
+        <TextField id="judgerName" label="審査員名"
+          variant="outlined" defaultValue={judgerName} disabled/>
+      </Paper>
+    </Box>
   );
 }
 

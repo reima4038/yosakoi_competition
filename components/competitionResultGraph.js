@@ -1,13 +1,28 @@
 import { Bar } from 'react-chartjs-2';
+import {
+  Box, Container,
+  List, ListItem, ListItemText,
+  Typography,
+} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyle = makeStyles({
+  chart: {
+    paddingTop: '16px',
+    marginLeft: '-16px'
+  }
+})
 
 // 審査結果集計
 export default function competitionResultGraph({ targets, judgements }) {
+  const classes = useStyle();
+  
   const graph_items = []
   const offset = 1;
   let graphData = [];
 
   targets.forEach((target, i) => {
-    graph_items.push(<li>({i + offset}) {target['title']}</li>)
+    graph_items.push(<ListItem><ListItemText>({i + offset}) {target['title']}</ListItemText></ListItem>)
     graphData.push({title: target.title, videoID: target.videoID, smile: 0, heat: 0, oneness: 0});
   })
 
@@ -47,7 +62,7 @@ export default function competitionResultGraph({ targets, judgements }) {
   const options = {
     // 凡例
     legend: {
-      position: 'right'
+      position: 'top'
     },
     // レスポンシブ（true だとサイズ自動調整）
     responsive: false,
@@ -64,7 +79,7 @@ export default function competitionResultGraph({ targets, judgements }) {
           // 下記のように固定値ではなく、
           // データに応じて算出するのがいいと思います
           max: 24,
-          stepSize: 4,
+          stepSize: 5,
         }
       }],
       // Y軸
@@ -75,18 +90,19 @@ export default function competitionResultGraph({ targets, judgements }) {
   };
 
   return (
-    <div>
-      <h2>審査結果集計</h2>
-      <Bar
-        data={data}
-        width={500}
-        height={300}
-        options={options}
-      />
-
-      <ul>
+    <Box>
+      <Typography variant="h6">審査結果集計</Typography>
+      <Container maxWidth="md" className={classes.chart}>
+        <Bar
+          data={data}
+          width={350}
+          height={400}
+          options={options}
+        />
+      </Container>
+      <List>
         {graph_items}
-      </ul>
-    </div>
+      </List>
+    </Box>
   );
 }

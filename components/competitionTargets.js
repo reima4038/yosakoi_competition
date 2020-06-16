@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
-import db from '../lib/db'
-// import { getTargets } from '../lib/competitionsDAO'
-import { getTargets } from '../lib/mockCompetitionsDAO'
+import Typography from '@material-ui/core/Typography'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 
 // 審査対象
 export default function competitionTargets({ targets }) {
@@ -9,15 +9,20 @@ export default function competitionTargets({ targets }) {
   const tags = [];
   const baseurl = 'https://www.youtube.com/watch?v=';
   targets?.forEach(target => {
-    tags.push(<li key={target.videoID}><a href={baseurl + target.videoID}>{target.title}</a></li>)
+    tags.push(
+      <ListItem key={target.videoID}>
+        <a href={baseurl + target.videoID}>
+          <ListItemText>{target.title}</ListItemText>
+        </a>
+      </ListItem>)
   });
 
   return (
     <div>
-        <h2>審査対象</h2>
-        <ul>
+        <Typography variant="h6">審査対象</Typography>
+        <List>
           {tags}
-        </ul>
+        </List>
     </div>
   )
 }

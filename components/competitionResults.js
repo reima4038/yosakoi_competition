@@ -1,4 +1,9 @@
 import Link from 'next/link';
+import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 
 // 審査結果
 export default function competitonResults({ judgements }) {
@@ -14,23 +19,26 @@ export default function competitonResults({ judgements }) {
   const tags = []
   judgements.forEach((judgement, i) => {
     tags.push(
-      <li>
+      <ListItem>
         <Link href={href(judgement.competitionID,
           judgement.title,
           judgement.judgerName)}>
-          <a>#{i + offset}{judgement.judgerName}</a>
+          <a>
+            <ListItemText>
+              #{i + offset} {judgement.judgerName}
+            </ListItemText>
+          </a>
         </Link>
-      </li>
+      </ListItem>
     )
   })
 
-  
-  return(
-    <div>
-      <h2>審査結果</h2>
-      <ul>
+  return (
+    <Box>
+      <Typography variant="h6">審査結果</Typography>
+      <List>
         {tags}
-      </ul>
-    </div>
+      </List>
+    </Box>
   );
 }

@@ -1,4 +1,11 @@
 import Link from 'next/link'
+import { makeStyles } from '@material-ui/core/styles'
+import {
+  Paper,
+  Button,
+  Box
+} from '@material-ui/core'
+
 import Layout from "../components/layout";
 import db from '../lib/db'
 // import { getJudgement } from '../lib/mockCompetitionsDAO'
@@ -6,7 +13,15 @@ import { getJudgement } from '../lib/competitionsDAO'
 import CompetitionTitle from '../components/competitionTitle'
 import CompetitionMoviesViewOnly from '../components/competitionMoviesReadOnly'
 
+const useStyles = makeStyles({
+  root:{
+    padding: '16px 16px 16px 16px'
+  }
+});
+
+
 export default function Result({ id, title, judgement }) {
+  const classes = useStyles();
 
   const href = {
     pathname: '/competitions',
@@ -17,9 +32,15 @@ export default function Result({ id, title, judgement }) {
   }
   return (
     <Layout>
-      <CompetitionTitle title={title} />
+      <Paper className={classes.root} >
+        <CompetitionTitle title={title} />
+      </Paper>
       <CompetitionMoviesViewOnly targets={judgement.target} judgerName={judgement.judgerName}/>
-      <Link href={href}><button>戻る</button></Link>
+      <Paper className={classes.root}>
+        <Box textAlign="center">
+          <Link href={href}><button>戻る</button></Link>
+        </Box>
+      </Paper>
     </Layout>
   )  
 }

@@ -153,11 +153,13 @@ export default function CompetitionRegisterForms() {
         </Box>
         <Box className={classes.root}>
           <Typography variant="h6">審査会の準備</Typography>
-          <Typography variant="body2">YouTubeの動画URLを最低１つ指定してください。タイトルは任意入力です。（未入力の場合、動画IDがタイトルとなります）</Typography>
+          <Typography variant="body2">YouTubeの動画URLを最低１つ指定してください。タイトルは未入力の場合、動画のIDがタイトルになります。</Typography>
           <List>
             {textFields()}
           </List>
-          <Button variant="contained" type="submit" color="primary">審査会を作成する</Button>
+          <Box textAlign="center">
+            <Button variant="contained" type="submit" color="primary">審査会を作成する</Button>
+          </Box>
         </Box>
       </form>
     </Paper>

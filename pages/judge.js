@@ -2,6 +2,13 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { makeStyles } from '@material-ui/core/styles'
+import {
+  Paper,
+  Button,
+  Grid
+} from '@material-ui/core'
+
 import Layout from '../components/layout'
 import CompetitionTitle from '../components/competitionTitle'
 import CompetitionMovies from '../components/CompetitionMovies'
@@ -9,7 +16,15 @@ import db from '../lib/db'
 import { addJudgement, getCompetition } from '../lib/competitionsDAO'
 // import { getTargets, addJudgement } from '../lib/mockCompetitionsDAO'
 
+const useStyles = makeStyles({
+  root:{
+    padding: '16px 16px 16px 16px'
+  }
+});
+
 export default function Judge({id, title, targets}) {
+  const classes = useStyles();
+
   const { register, handleSubmit, errors } = useForm();
 
   const router = useRouter();
@@ -83,17 +98,27 @@ export default function Judge({id, title, targets}) {
 
   return (
     <Layout>
-      <CompetitionTitle title={title} />
+      <Paper className={classes.root} >
+        <CompetitionTitle title={title} />
+      </Paper>
       <CompetitionMovies targets={targets}
         ratingHandler={rating}
         judgerHandler={judger}
         commentHandler={comment}
         register={register}
         errors={errors}/>
-      <Link href={href}>
-        <button>戻る</button>
-      </Link>
-      <button onClick={handleSubmit(postJudge)}>登録</button>
+      <Paper className={classes.root}>
+        <Grid container justify="center" spacing={8}>
+          <Grid item key="back">
+            <Link href={href}>
+              <Button variant="outlined" color="primary">戻る</Button>
+            </Link>
+          </Grid>
+          <Grid item key="register">
+            <Button variant="contained" onClick={handleSubmit(postJudge)} color="primary">登録</Button>
+          </Grid>
+        </Grid>
+      </Paper>
     </Layout>
   )
 }
