@@ -11,7 +11,7 @@ import {
 
 import Layout from '../components/layout'
 import CompetitionTitle from '../components/competitionTitle'
-import CompetitionMovies from '../components/CompetitionMovies'
+import CompetitionMovies from '../components/competitionMovies'
 import db from '../lib/db'
 import { addJudgement, getCompetition } from '../lib/competitionsDAO'
 // import { getTargets, addJudgement } from '../lib/mockCompetitionsDAO'
