@@ -23,7 +23,7 @@ export default function competitionResultGraph({ targets, judgements }) {
 
   targets.forEach((target, i) => {
     graph_items.push(<ListItem><ListItemText>({i + offset}) {target['title']}</ListItemText></ListItem>)
-    graphData.push({title: target.title, videoID: target.videoID, smile: 0, heat: 0, oneness: 0});
+    graphData.push({title: `(${i + 1})`, videoID: target.videoID, smile: 0, heat: 0, oneness: 0});
   })
 
   for(let i = 0; i < graphData.length; i++) {
