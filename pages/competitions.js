@@ -32,7 +32,7 @@ export default function Competitions({ id, title, targets, judgements }) {
   return (
     <Layout>
       <Paper className={classes.root}>
-        <CompetitionTitle title={query.title} />
+        <CompetitionTitle title={title} />
       </Paper>
       <Paper className={classes.root}>
         <CompetitionTargets targets={targets} />
@@ -68,7 +68,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       id: competitionID,
-      title: context.query.title,
+      title: competition.title,
       targets: competition.targets,
       judgements: judgements
     }

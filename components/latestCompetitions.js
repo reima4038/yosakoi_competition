@@ -24,7 +24,6 @@ export default function LatestCompetitions({ competitions }) {
           pathname: '/competitions',
           query: {
             id: competition.id,
-            title: competition.title
           }
         }
       }><a><ListItemText>{competition.title}</ListItemText></a></Link></ListItem>)

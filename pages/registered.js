@@ -35,7 +35,6 @@ export default function Registered ({ id, title }) {
           pathname: '/competitions',
           query: {
             id: id,
-            title: title
           }
         }}>
           <a>

@@ -29,8 +29,7 @@ export default function Judge({id, title, targets}) {
 
   const router = useRouter();
   const query = {
-    id: id,
-    title: title
+    id: id
   }
   const href = { pathname: '/competitions', query: query }
 

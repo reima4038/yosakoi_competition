@@ -27,7 +27,6 @@ export default function Result({ id, title, judgement }) {
     pathname: '/competitions',
     query: {
       id: id,
-      title: title
     }
   }
   return (
