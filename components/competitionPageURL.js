@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography'
 // 審査ページURLのコンポーネント
 
 export default function CompetitionPageURL(props) {
-  const baseUrl = 'http://competitions/';
+  const baseUrl = 'http://yosakoi-competition.vercel.app/competitions?id=';
   const competitionPageURL = 'competitionPageURL';
   return(
     <Box>
