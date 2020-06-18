@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form'
 import Router from 'next/router'
 import { TextField, Box } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -152,7 +151,7 @@ export default function CompetitionRegisterForms() {
           />
         </Box>
         <Box className={classes.root}>
-          <Typography variant="h6">審査会の準備</Typography>
+          <Typography variant="h6">審査対象を選ぶ</Typography>
           <Typography variant="body2">YouTubeの動画URLを最低１つ指定してください。タイトルは未入力の場合、動画のIDがタイトルになります。</Typography>
           <List>
             {textFields()}
