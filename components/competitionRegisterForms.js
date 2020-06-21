@@ -32,7 +32,9 @@ export default function CompetitionRegisterForms() {
   const [state, setState] = useState({});
   
   const videoIDOf = (youtubeUrl) => {
-    return youtubeUrl.replace(/&list.*/g, '').replace(/https:.*\/watch\?v=(.*)/g, "$1");
+    return youtubeUrl.replace(/&list.*/g, '')
+      .replace(/https:.*\/watch\?v=(.*)/g, "$1")
+      .replace(/https:\/\/youtu.be\//g, '');
   }
 
   const handleChange = (event) => {
