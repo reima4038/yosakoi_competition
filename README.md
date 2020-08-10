@@ -1,30 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app).
+# みんなでよさこい審査員
 
-## Getting Started
+よさこい及びYOSAKOIソーランの審査会を開催することができるWebアプリケーションです。
 
-First, run the development server:
+## よさこいとは
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+高知県の「[よさこい祭り](http://www.cciweb.or.jp/kochi/yosakoiweb/)」で踊られる「よさこい踊り」のことを指す。参加者は数十人から百数十人で構成されるチームに属し、次の3つのルールに従った演舞作品を披露する。
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* 鳴子を持つ
+* 前進する振り付け
+* よさこい鳴子踊りのフレーズを入れた楽曲を使う
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### 大会審査
 
-## Learn More
+よさこい祭りでは大会審査が行われ、優秀な演舞を披露したチームは表彰される。審査員は複数人からなる。大会期間中特定の演舞が審査対象となり、一定の評価基準をもとに審査される。審査結果によりチームが順位付けられ、上位のチームにはよさこい大賞以下、各賞が送られる。
 
-To learn more about Next.js, take a look at the following resources:
+### YOSAKOIソーラン祭り
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+派生したお祭りとして、北海道で開催される「YOSAKOIソーラン祭り」がある。基本的によさこい祭りのルールを踏襲しているが、楽曲によさこい鳴子踊りの代わりに北海道の民謡「ソーラン節」のフレーズを入れるようアレンジされている。
 
-You can check out [the Next.js GitHub repository](https://github.com/zeit/next.js/) - your feedback and contributions are welcome!
+## 「みんなでよさこい審査員」の使い方
 
-## Deploy on Vercel
+[WIP]
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 審査会を開催する
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[WIP]
+
+### 審査会に参加する
+
+[WIP]
+
+### 審査する
+
+[WIP]
+
+### 審査結果を確認する
+
+[WIP]
+
+### 審査会を終了する
+
+[WIP]
+
+### 不適切な審査結果を非表示にする
+
+[WIP]
